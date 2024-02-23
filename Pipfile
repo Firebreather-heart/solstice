@@ -11,6 +11,7 @@ pillow = "*"
 psycopg2-binary = "*"
 drf-yasg = {extras = ["validation"], version = "*"}
 django-cors-headers = "*"
+djangorestframework-simplejwt = "*"
 
 [dev-packages]
 

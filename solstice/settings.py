@@ -93,7 +93,7 @@ WSGI_APPLICATION = 'solstice.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql',
+        'ENGINE': 'django.db.backends.mysql',
         'NAME': 'solstice',
         'USER': 'solsticemaker',
         'PASSWORD': 'solsticepass',

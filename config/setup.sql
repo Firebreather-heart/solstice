@@ -1,9 +1,16 @@
-CREATE DATABASE  solstice;
+CREATE DATABASE IF NOT EXISTS solstice;
 
-CREATE USER solsticemaker WITH PASSWORD 'solsticepass';
+DELIMITER $$
+CREATE PROCEDURE CreateUserIfNotExists(IN p_username VARCHAR(16), IN p_password VARCHAR(41))
+BEGIN
+  IF NOT EXISTS (SELECT 1 FROM mysql.user WHERE user = p_username)
+  THEN
+    CREATE USER p_username IDENTIFIED BY p_password;
+  END IF;
+END$$
+DELIMITER ;
 
-ALTER ROLE solsticemaker SET client_encoding TO 'utf8';
-ALTER ROLE solsticemaker SET default_transaction_isolation TO 'read committed';
-ALTER ROLE solsticemaker SET timezone TO 'UTC';
+CALL CreateUserIfNotExists('solsticemaker', 'solsticepass');
 
-GRANT ALL PRIVILEGES ON DATABASE solstice TO solsticemaker;
+GRANT ALL PRIVILEGES ON solstice.* TO 'solsticemaker'@'%';
+FLUSH PRIVILEGES;

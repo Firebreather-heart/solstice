@@ -12,6 +12,7 @@ psycopg2-binary = "*"
 drf-yasg = {extras = ["validation"], version = "*"}
 django-cors-headers = "*"
 djangorestframework-simplejwt = "*"
+dj-rest-auth = "*"
 
 [dev-packages]
 

@@ -1,5 +1,4 @@
-# Personal Budget App - ALX Final Project
-# solstice
+# Solstice - ALX Final Project
 A next-gen personalised finance management application 
 
 

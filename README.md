@@ -65,8 +65,8 @@ To run the project locally, follow these steps:
 
 1. Clone the repository:
    ```bash
-   git clone https://github.com/your-username/personal-budget-app.git
-   cd personal-budget-app
+   git clone https://github.com/Firebreather-heart/solstice.git
+   cd solstice
    ```
 
 2. Install dependencies:

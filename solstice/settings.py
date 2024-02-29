@@ -14,6 +14,7 @@ from pathlib import Path
 import os
 
 
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -44,15 +45,19 @@ INSTALLED_APPS = [
 
     #3rd party
     'rest_framework',
+    'rest_framework.authtoken',
     'drf_yasg',
     'allauth',
     'allauth.account',
     'allauth.socialaccount',
     'allauth.socialaccount.providers.google',
     'corsheaders',
+    'dj_rest_auth',
+    'dj_rest_auth.registration',
 
     #inbuilt
-    'users',
+    'users.apps.UsersConfig',
+    'budgeting.apps.BudgetingConfig',
 ]
 
 MIDDLEWARE = [
@@ -153,6 +158,14 @@ MEDIA_ROOT = 'media/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 AUTH_USER_MODEL = 'users.User'
+ACCOUNT_USER_MODEL_USERNAME_FIELD = None 
+ACCOUNT_AUTHENTICATION_METHOD = 'email'
+ACCOUNT_UNIQUE_EMAIL = True
+ACCOUNT_EMAIL_REQUIRED = True 
+ACCOUNT_USERNAME_REQUIRED = False 
+
+LOGIN_REDIRECT_URL = 'show_budgets'
+ACCOUNT_SIGNUP_REDIRECT_URL = 'show_budgets'
 
 #restframework settings
 REST_FRAMEWORK = {
@@ -193,3 +206,9 @@ CORS_ALLOW_METHODS = [
     'PUT',
 ]
 
+AUTHENTICATION_BACKENDS = [
+    'django.contrib.auth.backends.ModelBackend',
+    'allauth.account.auth_backends.AuthenticationBackend',
+]
+
+EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"

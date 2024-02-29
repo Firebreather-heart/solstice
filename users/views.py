@@ -2,40 +2,58 @@ from django.shortcuts import render, redirect
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from rest_framework.permissions import AllowAny
-from .serializers import UserSerializer
+from rest_framework.permissions import AllowAny,IsAuthenticated
+from .serializers import UserSerializer,ProfileSerializer
 from drf_yasg.utils import swagger_auto_schema
-from django.contrib.auth import authenticate,login
+from .models import Profile
 from rest_framework.authtoken.models import Token
+from rest_framework.authtoken.views import ObtainAuthToken
+from rest_framework.generics import CreateAPIView, UpdateAPIView
 
 # Create your views here.
 
 
-class UserRegistrationAPIView(APIView):
-    permission_classes = [AllowAny]
+    
+# class CreateProfile(CreateAPIView):
+#     permission_classes = [IsAuthenticated]
+#     serializer_class = ProfileSerializer
+#     queryset = Profile.objects.all()
 
-    @swagger_auto_schema(request_body=UserSerializer,
-                         responses={201: 'User created successfully', 400: 'Invalid data provided'})
+# class UpdateProfile(UpdateAPIView):
+#     permission_classes = [IsAuthenticated]
+#     serializer_class = ProfileSerializer
+#     queryset = Profile.objects.all()
+
+class ProfileView(APIView):
+    permission_classes = [IsAuthenticated]
+    
+    @swagger_auto_schema(
+        request_body=ProfileSerializer,
+        responses={201: 'Profile created successfully', 400: 'Invalid data provided'}
+    )
     def post(self, request):
-        serializer = UserSerializer(data=request.data)
+        serializer = ProfileSerializer(data = request.data)
         if serializer.is_valid():
             serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+            return Response(serializer.data, status = status.HTTP_201_CREATED)
+        return Response(serializer.errors, status = status.HTTP_400_BAD_REQUEST)
     
-class LoginAPIView(APIView):
-    permission_classes = [AllowAny]
-
-    @swagger_auto_schema(request_body=UserSerializer,
-                         responses={201: 'User logged in successfully', 400: 'Invalid data provided'})
-    def post(self, request):
-        email = request.data.get('email')
-        password = request.data.get('password')
-        user = authenticate(email=email, password=password)
-
-        if user:
-            login(request, user)
-            token, created = Token.objects.get_or_create(user=user)
-            return Response({'token': token.key}, status=status.HTTP_200_OK)
-        else:
-            return Response({'error': 'Invalid Credentials'},status=status.HTTP_401_UNAUTHORIZED)
+    @swagger_auto_schema(
+        request_body=ProfileSerializer,
+        responses={201: 'Profile updated successfully', 400: 'Invalid data provided'}
+    )
+    def put(self, request):
+        profile = Profile.objects.get(user = request.user)
+        serializer = ProfileSerializer(profile, data = request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status = status.HTTP_201_CREATED)
+        return Response(serializer.errors, status = status.HTTP_400_BAD_REQUEST)
+    
+    @swagger_auto_schema(
+        responses={200: 'Profile retrieved successfully'}
+    )
+    def get(self, request):
+        profile = Profile.objects.get(user = request.user)
+        serializer = ProfileSerializer(profile)
+        return Response(serializer.data, status = status.HTTP_200_OK)

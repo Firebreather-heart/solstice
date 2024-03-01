@@ -1,5 +1,5 @@
 # Solstice - ALX Final Project
-A next-gen personalised finance management application 
+A next-gen personalised financial management application 
 
 
 ## Team Members
@@ -18,8 +18,8 @@ The Personal Budget App is a collaborative project undertaken by our team for th
 - Passwords are encrypted and stored securely.
 
 ### 2. Dashboard
-- The dashboard provides an overview of the user's financial situation.
-- It includes visualizations and charts for income, expenses, and savings.
+- The dashboard provides an overview of the user's finances.
+- It includes visualizations and charts for income, expenses, and savings for every month.
 
 ### 3. Income Tracking
 - Users can input and track their income from various sources.
@@ -46,7 +46,7 @@ The Personal Budget App is a collaborative project undertaken by our team for th
 ### Backend
 - Django: A high-level Python web framework for building robust web applications.
 - Django REST Framework: An extension of Django for building RESTful APIs.
-
+- Nodjs 
 ### Frontend
 - React: A JavaScript library for building user interfaces.
 - Redux: A predictable state container for JavaScript apps.
@@ -60,7 +60,7 @@ The Personal Budget App is a collaborative project undertaken by our team for th
 
 ## Getting Started
 
-To run the project locally, follow these steps:
+To run the project locally, follow these steps carefully:
 
 1. Clone the repository:
    ```bash

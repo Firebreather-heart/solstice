@@ -3,10 +3,12 @@ const bodyParser = require('body-parser');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
 const { Pool } = require('pg');
+const cors = require('cors');
 
 require('dotenv').config();
 
 const app = express();
+app.use(cors("*"));
 const port = process.env.PORT || 3000;
 
 // PostgreSQL connection setup

@@ -1,9 +1,9 @@
+from django.contrib.auth import get_user_model
 from django.db import models
-from users.models import Profile
 # Create your models here.
 
 class Budget(models.Model):
-    user = models.ForeignKey(Profile, related_name='budget', on_delete = models.CASCADE)
+    user = models.ForeignKey(get_user_model(), related_name='budget', on_delete = models.CASCADE)
     name = models.CharField(max_length = 100)
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
@@ -38,19 +38,41 @@ class Budget(models.Model):
         return f"{self.created.isoformat(':')} {self.currency}{self.amount} Budget"
 
 class Expense(models.Model):
+    user = models.ForeignKey(get_user_model(), related_name='expenses', on_delete = models.CASCADE)
     name = models.CharField(max_length = 100)
     description = models.TextField()
     budget = models.ForeignKey(Budget, related_name='expenses', on_delete=models.CASCADE)
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
     amount = models.DecimalField(max_digits = 10, decimal_places = 2)
+    spent = models.DecimalField(max_digits = 10, decimal_places = 2, default=0)
+    balance = models.IntegerField()
+
 
     def save(self, *args, **kwargs):
         if self.budget.amount_left < self.amount:
             raise ValueError('Expense exceeds budget balance')
+        self.balance =self.amount - self.spent #allows for going over budgeted expense, hence debt
         return super().save(*args, **kwargs)
+    
+    def spend(self, amount):
+        self.spent += amount 
+        self.save()
 
     def __str__(self):
         return f"{self.name} Expense, cost:{self.amount} {self.budget.currency}"
     
     
+class Transaction(models.Model):
+    user = models.ForeignKey(get_user_model(), related_name='transactions', on_delete = models.CASCADE)
+    expense = models.ForeignKey(Expense, related_name='transactions', on_delete=models.CASCADE)
+    created = models.DateTimeField(auto_now_add=True)
+    amount = models.DecimalField(max_digits = 10, decimal_places = 2)
+    description = models.TextField()
+
+    def __str__(self):
+        return f"Transaction - desc:{self.description} on {self.created}"
+    
+    def save(self, *args, **kwargs):
+        self.expense.spend(self.amount)
+        return super().save(*args, **kwargs)

@@ -1,4 +1,4 @@
-from .models import Budget, Expense 
+from .models import Budget, Expense, Transaction
 from rest_framework import serializers 
 
 class BudgetSerializer(serializers.ModelSerializer):
@@ -17,3 +17,12 @@ class ExpenseSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
         budget = Expense.objects.create(**validated_data)
+
+class TransactionSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Transaction 
+        fields = ['created', 'amount', 'description', 'expense']
+
+    def create(self, validated_data):
+        transaction = Transaction.objects.create(**validated_data)
+        return transaction

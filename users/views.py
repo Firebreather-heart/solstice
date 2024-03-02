@@ -2,13 +2,10 @@ from django.shortcuts import render, redirect
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from rest_framework.permissions import AllowAny,IsAuthenticated
-from .serializers import UserSerializer,ProfileSerializer
+from rest_framework.permissions import IsAuthenticated
+from .serializers import ProfileSerializer
 from drf_yasg.utils import swagger_auto_schema
 from .models import Profile
-from rest_framework.authtoken.models import Token
-from rest_framework.authtoken.views import ObtainAuthToken
-from rest_framework.generics import CreateAPIView, UpdateAPIView
 
 # Create your views here.
 

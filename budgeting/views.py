@@ -35,6 +35,8 @@ class BudgetDetailAPIView(ListAPIView):
     def get_queryset(self):
         user = self.request.user
         return Budget.objects.filter(user=user)
+    
+    
 
 class CreateBudgetAPIView(CreateAPIView):
     permission_classes = [IsAuthenticated]

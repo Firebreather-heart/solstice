@@ -12,7 +12,7 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 
 from pathlib import Path
 import os
-
+import dj_database_url
 
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -28,7 +28,7 @@ SECRET_KEY = 'django-insecure-j-8rjx81#zdo2bgdi(t)1bblfju!-1^onxub3b%by939+*x5+#
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['fbc.pythonanywhere.com', 'localhost', '127.0.0.1']
+ALLOWED_HOSTS = ['fbc.pythonanywhere.com', 'localhost', '127.0.0.1', 'solstice.onrender.com']
 
 
 # Application definition
@@ -147,8 +147,8 @@ SITE_ID = 1
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
-STATIC_URL = 'static/'
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
 MEDIA_ROOT = 'media/'
 

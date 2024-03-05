@@ -1,66 +1,32 @@
-/* Navigation Bar Styling */
-.navbar {
-    background-color: #007bff; /* Primary color */
-    box-shadow: 0 2px 4px rgba(0,0,0,.1);
-  }
   
-  .navbar-brand {
-    color: #fff !important;
-    font-weight: bold;
-  }
-  
-  .navbar-brand:hover {
-    color: #ccc !important;
-  }
-  
-  /* Button Styling */
-  .btn-outline-primary {
-    color: #fff;
-    border-color: #fff;
-  }
-  
-  .btn-outline-primary:hover {
-    background-color: #0056b3;
-    border-color: #0056b3;
-  }
-  
-  .btn-primary {
-    margin-left: 15px;
-    background-color: #ffc107; /* Secondary color for contrast */
-    border-color: #ffc107;
-  }
-  
-  .btn-primary:hover {
-    background-color: #e0a800;
-    border-color: #d39e00;
-  }
-  
-  /* HomePage and Modal Custom Styling */
-  .home-page {
-    padding: 20px;
-  }
-  
-  /* Income List Styling */
-  .income-list {
-    margin-top: 20px;
-  }
-  
-  .income-list-item {
-    background-color: #f8f9fa;
-    border: 1px solid #dee2e6;
-    border-radius: 5px;
-    padding: 10px 15px;
-    margin-bottom: 10px;
+  .navbar {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    background-color: #409cd4;
+    color: white;
+    padding: 10px 20px;
+  }
+  .logout {
+    background-color: #f44336;
+    color: white;
+  }
+  .buttons button {
+    margin-left: 10px;
+    padding: 8px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  .brand-container {
+    display: flex;
+    align-items: center;
   }
   
-  .income-source {
-    font-weight: bold;
+  .brand-icon {
+    margin-right: 10px;
   }
   
-  .income-amount {
-    color: #28a745; /* Green color for amount */
+  .brand {
+    font-size: 24px;
   }
-  

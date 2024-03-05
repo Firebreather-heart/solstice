@@ -1,115 +1,184 @@
-import React, { useState, useEffect } from 'react';
-import BudgetIcon from '../assets/budget-icon.jpg';
-import { useNavigate } from 'react-router-dom'; // Import useNavigate
-import './home.css';
+import React, { useState } from "react";
+import Budget from "../assets/budget.webp";
+import "./home.css";
+import { addBudget, modifyElement, addExpense,  } from "../utils";
 
 const HomePage = () => {
-  const navigate = useNavigate(); // Initialize useNavigate
-  const [showForm, setShowForm] = useState(false);
-  const [source, setSource] = useState('');
-  const [amount, setAmount] = useState('');
-  const [incomes, setIncomes] = useState([]);
-
-  useEffect(() => {
-    fetchIncomes();
-  }, []);
-
-  const fetchIncomes = async () => {
-    const userId = localStorage.getItem('userId');
-    try {
-      const response = await fetch(`https://solstice-cjof.onrender.com/incomes/${userId}`);
-      if (!response.ok) throw new Error('Failed to fetch incomes');
-      const data = await response.json();
-      setIncomes(data);
-    } catch (error) {
-      console.error('Error fetching incomes:', error);
-      alert('Error fetching incomes. Please try again.');
-    }
+  const [tempAmount, setTempAmount] = useState(0);
+  const [budget, setBudget] = useState(0);
+  const [title, setTitle] = useState("");
+  const [amount, setAmount] = useState("");
+  const [expenseList, setExpenseList] = useState([]);
+  const [errorMessage, setErrorMessage] = useState("");
+  const [balanceValue, setBalanceValue] = useState(0);
+  const [disableButtons, setDisableButtons] = useState(false);
+  const [ expenditureValue, setExpenditureValue ]= useState(0);
+  const [productTitleError, setProductTitleError] = useState("")
+    const handleAddBudget = () => {
+    addBudget(tempAmount, setErrorMessage, setBudget, setBalanceValue);
   };
 
-  const handleLogout = () => {
-    window.location.href = '/logout';
+  const handleAddExpense = () => {
+    addExpense(
+      amount,
+      title,
+      setTitle,
+      setAmount,
+      setDisableButtons,
+      setProductTitleError,
+      expenditureValue,
+      tempAmount,
+      setBalanceValue,
+      setExpenseList,
+      setExpenditureValue,
+      expenseList
+      );
   };
-
-  const handleCreateIncome = async (event) => {
-    event.preventDefault();
-    const userId = localStorage.getItem('userId');
-    const incomeData = { user_id: userId, source, amount };
-
-    try {
-      const response = await fetch('https://solstice-cjof.onrender.com/create-income', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(incomeData),
-      });
-
-      if (!response.ok) throw new Error('Failed to create income');
-
-      fetchIncomes();
-      setSource('');
-      setAmount('');
-      setShowForm(false);
-    } catch (error) {
-      console.error('Error creating income:', error);
-      alert('Error creating income. Please try again.');
-    }
-  };
-
-  const handleIncomeClick = (incomeId) => {
-    localStorage.setItem('selectedIncomeId', incomeId);
-    navigate('/expense'); // Navigate to ExpensePage
-  };
-
+  /**   userAmount,
+  productTitle,
+  setProductTitle,
+  setAmount,
+  setDisableButtons,
+  productTitleError,
+  expenditureValue,
+  tempAmount,
+  setBalanceValue,
+  setExpenseList,
+  setExpenses
+ */
   return (
     <>
-      <nav className="navbar">
-        <div className="brand-container">
-          <img alt="Budget App" src={BudgetIcon} width="30" height="30" className="brand-icon" />
-          <h1 className="brand">Solstice Budget App</h1>
+      <div className="background">
+        <div className="mask">
+          <img className="backgroundImage" src={Budget} alt="budget" />
         </div>
-        <div className="buttons">
-          <button className="logout" onClick={handleLogout}>Logout</button>
-        </div>
-      </nav>
-
-      <div className="container">
-        <h1 className="section-heading">Your Incomes</h1>
-        <div className="income-list">
-          <div className="income-item">
-            <div className="label">Number</div>
-            <div className="label">INCOME</div>
-            <div className="label">AMOUNT</div>
-          </div>
-          {incomes.map((income, index) => (
-            <div className="income-item" key={index} onClick={() => handleIncomeClick(income.id)}> {/* Pass income ID */}
-              <div>{index + 1}</div>
-              <div>{income.source}</div>
-              <div>${income.amount}</div>
+          <div className="content">
+            <div className="wrapper">
+              <div className="container">
+                <div className="sub-container">
+                  <div className="total-amount-container">
+                    <h3>Budget</h3>
+                    {errorMessage && (
+                      <p className="error" id="budget-error">
+                        {errorMessage}
+                      </p>
+                    )}
+                    <input
+                      type="number"
+                      id="total-amount"
+                      value={tempAmount}
+                      onChange={(e) => setTempAmount(e.target.value)}
+                      placeholder="Enter Total Amount"
+                    />
+                    <button
+                      className="submit"
+                      onClick={handleAddBudget}
+                      id="total-amount-button"
+                    >
+                      Add Budget
+                    </button>
+                  </div>
+                  {/* Expense Section */}
+                  <div className="user-amount-container">
+                    <h3>Expenses</h3>
+                    <input
+                      type="text"
+                      className="product-title"
+                      id="product-title"
+                      value={title}
+                      onChange={(e) => setTitle(e.target.value)}
+                      placeholder="Enter Title of Product"
+                    />
+                    <input
+                      type="number"
+                      id="user-amount"
+                      value={amount}
+                      onChange={(e) => setAmount(e.target.value)}
+                      placeholder="Enter Cost of Product"
+                    />
+                    <button
+                      className="submit"
+                      onClick={handleAddExpense}
+                      id="check-amount"
+                      
+                    >
+                      Add Expenses
+                    </button>
+                  </div>
+                  {/* Output Section */}
+                </div>
+                <div className="output-container flex-space">
+                  <div>
+                    <p>Total Budget</p>
+                    <span id="amount">{budget}</span>
+                  </div>
+                  <div>
+                    <p>Expenses</p>
+                    <span id="expenditure-value">
+                      {expenditureValue}
+                    </span>
+                  </div>
+                  <div>
+                    <p>Balance</p>
+                    <span id="balance-amount">{balanceValue}</span>
+                  </div>
+                </div>
+                {/* List Section */}
+              </div>
+              <div className="list">
+                <h3>Expense List</h3>
+                <div className="list-container" id="list">
+                  {/* Render expense list items */}
+                  {expenseList.map((expense, index) => (
+                    <div className="sublist-content flex-space" key={index}>
+                      <p className="product">{expense.title}</p>
+                      <p className="amount">{expense.amount}</p>
+                      {/*   index,
+  edit,
+  expenseList,
+  setProductTitle,
+  setAmount,
+  setDisableButtons,
+  setBalanceValue,
+  setExpenses,
+ */}
+                      <button
+                        className="fa-solid fa-pen-to-square edit"
+                        onClick={() =>
+                          modifyElement(
+                            index,
+                            true,
+                            expenseList,
+                            setTitle,
+                            setAmount,
+                            setDisableButtons,
+                            setBalanceValue,
+                            () => {}
+                          )
+                        }
+                      >
+                        Edit
+                      </button>
+                      <button
+                        className="fa-solid fa-trash-can delete"
+                        onClick={() =>
+                          modifyElement(
+                            index,
+                            title,
+                            amount,
+                            setDisableButtons,
+                            setBalanceValue
+                          )
+                        }
+                      >
+                        Delete
+                      </button>
+                    </div>
+                  ))}
+                </div>
+              </div>
             </div>
-          ))}
         </div>
-      </div>
-
-      <div className="create-income-container">
-        <button className="create-income" onClick={() => setShowForm(true)}>Create Income</button>
-        {showForm && (
-          <div className="create-income-form">
-            <h2>Create New Income</h2>
-            <form onSubmit={handleCreateIncome}>
-              <div className="form-group">
-                <label htmlFor="source">Source</label>
-                <input type="text" id="source" value={source} onChange={(e) => setSource(e.target.value)} required />
-              </div>
-              <div className="form-group">
-                <label htmlFor="amount">Amount</label>
-                <input type="number" id="amount" value={amount} onChange={(e) => setAmount(e.target.value)} required />
-              </div>
-              <div className="button-group">
-                <button type="submit" className="submit-btn">Submit</button>
-              </div>
-            </form>
-          </div>
-        )}
       </div>
     </>
   );

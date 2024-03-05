@@ -13,6 +13,7 @@ drf-yasg = {extras = ["validation"], version = "*"}
 django-cors-headers = "*"
 djangorestframework-simplejwt = "*"
 dj-rest-auth = "*"
+python-dotenv = "*"
 
 [dev-packages]
 

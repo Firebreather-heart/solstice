@@ -1,0 +1,71 @@
+.navbar {
+    background-color: #333;
+    color: #fff;
+    padding: 10px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .brand {
+    margin: 0;
+    font-size: 1.5rem;
+  }
+  
+  .buttons {
+    display: flex;
+    align-items: center;
+  }
+  
+  .back {
+    color: #fff;
+    text-decoration: none;
+    padding: 5px 10px;
+    background-color: #007bff;
+    border: none;
+    border-radius: 5px;
+    margin-left: 10px;
+  }
+  
+  .container {
+    margin: 20px auto;
+    padding: 20px;
+  }
+  
+  .section-heading {
+    margin-bottom: 20px;
+  }
+  
+  .expenses-table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  
+  .expenses-table th,
+  .expenses-table td {
+    padding: 10px;
+    border: 1px solid #ccc;
+  }
+  
+  .expenses-table th {
+    background-color: #007bff;
+    color: #fff;
+  }
+  
+  .expenses-table td {
+    text-align: center;
+  }
+  
+  button {
+    padding: 5px 10px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  button:hover {
+    background-color: #0056b3;
+  }
+  

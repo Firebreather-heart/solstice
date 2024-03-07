@@ -5,7 +5,8 @@ import Signup from "./users/Signup";
 import "./App.css";
 import HomePage from "./Home/HomePage";
 import ExpensePage from "./expense/Expense";
-import Navbar from "./components/Navbar.js";
+import Navbar from "./component/Navbar.js";
+import { Toaster } from "src/components/ui/sonner"
 
 function App() {
   return (
@@ -16,12 +17,13 @@ function App() {
         <div className="App">
           <Routes>
             <Route path="/signup" element={<Signup />} />
-            <Route path="/" element={<Login />} />
+            <Route path="/login" element={<Login />} />
             <Route path="/homepage" element={<HomePage />} />
             <Route path="/expense" element={<ExpensePage />} />
           </Routes>
         </div>
       </Router>
+      <Toaster />
     </div>
   );
 }

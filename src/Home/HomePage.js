@@ -14,10 +14,13 @@ const HomePage = () => {
   const [disableButtons, setDisableButtons] = useState(false);
   const [ expenditureValue, setExpenditureValue ]= useState(0);
   const [productTitleError, setProductTitleError] = useState("")
-    const handleAddBudget = () => {
+    
+  const handleAddBudget = () => {
     addBudget(tempAmount, setErrorMessage, setBudget, setBalanceValue);
   };
-
+const handleDelete = (item) => {
+  
+};
   const handleAddExpense = () => {
     addExpense(
       amount,
@@ -34,18 +37,7 @@ const HomePage = () => {
       expenseList
       );
   };
-  /**   userAmount,
-  productTitle,
-  setProductTitle,
-  setAmount,
-  setDisableButtons,
-  productTitleError,
-  expenditureValue,
-  tempAmount,
-  setBalanceValue,
-  setExpenseList,
-  setExpenses
- */
+ 
   return (
     <>
       <div className="background">
@@ -133,15 +125,6 @@ const HomePage = () => {
                     <div className="sublist-content flex-space" key={index}>
                       <p className="product">{expense.title}</p>
                       <p className="amount">{expense.amount}</p>
-                      {/*   index,
-  edit,
-  expenseList,
-  setProductTitle,
-  setAmount,
-  setDisableButtons,
-  setBalanceValue,
-  setExpenses,
- */}
                       <button
                         className="fa-solid fa-pen-to-square edit"
                         onClick={() =>
@@ -159,6 +142,8 @@ const HomePage = () => {
                       >
                         Edit
                       </button>
+                      
+                      {/* delete */}
                       <button
                         className="fa-solid fa-trash-can delete"
                         onClick={() =>

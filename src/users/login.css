@@ -14,11 +14,17 @@
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     width: 100%;
     max-width: 400px;
-    text-align: center;
   }
   
   .login-form h2 {
     margin-bottom: 1rem;
+    text-align: center;
+    letter-spacing: 2px;
+    font-size: 30px;
+    font-weight: 700;
+    background-image: linear-gradient(90deg, red,blue);
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
   }
   
   .login-form input {
@@ -44,8 +50,11 @@
     background-color: #0056b3;
   }
   
-  .signup-link {
+  .login-link {
     margin-top: 1rem;
     display: block;
   }
   
+  .link {
+    color: blue;
+  }

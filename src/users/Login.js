@@ -1,58 +1,93 @@
-// src/components/Login.js
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
-import './login.css'; // Make sure the path is correct
-import { useNavigate } from 'react-router-dom'; // Import useNavigate
+import { Link, redirect } from 'react-router-dom';
+import './login.css';
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '../components/ui/form';
+import { Input } from '../components/ui/input';
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { LoginSchema } from '../schema';
+import { cn } from '../lib/utils';
 
 const Login = () => {
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
-  const navigate = useNavigate(); // useNavigate hook for navigation
 
-  const handleSubmit = async (event) => {
-    event.preventDefault();
+  const [isLoading,setIsLoading] = useState(true);
+  
+  const handleSubmit = async (values) => {
+    setIsLoading(true);
     try {
       const response = await fetch('https://solstice-cjof.onrender.com/login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ username, password }),
+        body: JSON.stringify(values),
       });
       const data = await response.json();
       if (response.ok) {
-        console.log('Login successful:', data);
         localStorage.setItem('userId', data.userId);
-        navigate('/homepage'); // Navigate to homepage on success
+        window.location.href=("/homepage");
       } else {
         throw new Error(data.message || 'Failed to login');
       }
+       setIsLoading(false);
     } catch (error) {
       alert(error.message);
     }
   };
 
+  const form = useForm({
+    resolver: zodResolver(LoginSchema),
+    defaultValues: {
+      username: "",
+      email: "",
+      password: "",
+    },
+  });
+
+  
   return (
     <div className="login-container">
-      <form onSubmit={handleSubmit} className="login-form">
-        <h2>Welcome Back</h2>
-        <input
-          type="text"
-          placeholder="Username"
-          value={username}
-          onChange={(e) => setUsername(e.target.value)}
+      <Form {...form}>
+      <form onSubmit={form.handleSubmit(handleSubmit)} className="login-form">
+        <h2>LOGIN</h2>
+        <FormField
+          control={form.control}
+          name="username"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Username</FormLabel>
+              <FormControl>
+                <Input placeholder="username" type="text" className={cn("", {
+                  "form-error":field.error
+                })}
+                  {...field}
+                />
+              </FormControl>
+              <FormMessage/>
+            </FormItem>
+          )}
         />
-        <input
-          type="password"
-          placeholder="Password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
+        <FormField
+          control={form.control}
+          name="password"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Password</FormLabel>
+              <FormControl>
+                <Input placeholder="password" type="password"
+                  {...field}
+                />
+              </FormControl>
+              <FormMessage/>
+            </FormItem>
+          )}
         />
-        <button type="submit">Log In</button>
-        <p className="signup-link">
-          Don't have an account? <Link to="/signup">Sign Up</Link>
+        <button type="submit">{isLoading ? 'creating...' :'Log In'}</button>
+        <p className="login-link">
+          Don't have an account? <Link className='link' to="/signup">Sign Up</Link>
         </p>
       </form>
+      </Form>
     </div>
   );
 };

@@ -3,7 +3,7 @@ import "./navbar.css";
 import BudgetIcon from "../assets/budget-icon.jpg";
 
 const handleLogout = () => {
-  window.location.href = "/logout";
+  window.location.href = "/login";
 };
 
 function Navbar() {

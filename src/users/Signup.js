@@ -1,58 +1,89 @@
-// src/components/Signup.js
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
-import './signup.css'; // Make sure the path is correct
-import { useNavigate } from 'react-router-dom'; // Import useNavigate
+import React, { useRef, useState } from 'react';
+import { Link, redirect } from 'react-router-dom';
+import './signup.css';
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '../components/ui/form';
+import { Input } from '../components/ui/input';
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { SignupSchema } from '../schema';
+import { toast } from "sonner";
+
 
 const Signup = () => {
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
-  const navigate = useNavigate(); // useNavigate hook for navigation
+  const formRef = useRef(null);
+  const handleSubmit = async (values) => {
 
-  const handleSubmit = async (event) => {
-    event.preventDefault();
     try {
       const response = await fetch('https://solstice-cjof.onrender.com/signup', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ username, password }),
+        body: JSON.stringify(values),
       });
       const data = await response.json();
       if (response.ok) {
-        console.log('Signup successful:', data);
-        navigate('/'); // Navigate to login on success
+       window.location.href = "/login";
+       toast("Account created");
       } else {
         throw new Error(data.message || 'Failed to signup');
       }
     } catch (error) {
-      alert(error.message);
+      toast(error.message)
     }
   };
+
+  const form = useForm({
+    resolver: zodResolver(SignupSchema),
+    defaultValues: {
+      username: "",
+      password: "",
+    },
+  });
 
 
   return (
     <div className="signup-container">
-      <form onSubmit={handleSubmit} className="signup-form">
-        <h2>Create Account</h2>
-        <input
-          type="text"
-          placeholder="Username"
-          value={username}
-          onChange={(e) => setUsername(e.target.value)}
+       <Form {...form}>
+
+      <form ref={formRef} onSubmit={form.handleSubmit(handleSubmit)} className="signup-form">
+        <h2>SIGNUP</h2>
+        <FormField
+          control={form.control}
+          name="username"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Username</FormLabel>
+              <FormControl>
+                <Input placeholder="username" type="text"
+                  {...field}
+                />
+              </FormControl>
+              <FormMessage/>
+            </FormItem>
+          )}
         />
-        <input
-          type="password"
-          placeholder="Password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
+        <FormField
+          control={form.control}
+          name="password"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Password</FormLabel>
+              <FormControl>
+                <Input placeholder="password" type="password"
+                  {...field}
+                />
+              </FormControl>
+              <FormMessage/>
+            </FormItem>
+          )}
         />
         <button type="submit">Sign Up</button>
-        <p className="login-link">
-          Already have an account? <Link to="/">Log In</Link>
+        <p className="signup-link">
+          Already have an account? <Link className='link' to="/login">Login</Link>
         </p>
       </form>
+      </Form>
     </div>
   );
 };

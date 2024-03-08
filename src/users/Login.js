@@ -6,7 +6,6 @@ import { Input } from '../components/ui/input';
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { LoginSchema } from '../schema';
-import { cn } from '../lib/utils';
 
 const Login = () => {
 
@@ -57,9 +56,7 @@ const Login = () => {
             <FormItem>
               <FormLabel>Username</FormLabel>
               <FormControl>
-                <Input placeholder="username" type="text" className={cn("", {
-                  "form-error":field.error
-                })}
+                <Input placeholder="username" type="text"
                   {...field}
                 />
               </FormControl>

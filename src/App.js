@@ -6,7 +6,7 @@ import "./App.css";
 import HomePage from "./Home/HomePage";
 import ExpensePage from "./expense/Expense";
 import Navbar from "./component/Navbar.js";
-import { Toaster } from "src/components/ui/sonner"
+import { Toaster } from "./../src/components/ui/sonner";
 
 function App() {
   return (
